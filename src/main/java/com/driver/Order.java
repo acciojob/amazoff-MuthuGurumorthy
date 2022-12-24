@@ -5,6 +5,11 @@ public class Order {
     private String id;
     private int deliveryTim;
 
+    private String setDeliveryTime;
+    public Order(String id, int deliveryTim) {
+        this.id = id;
+        this.deliveryTim = deliveryTim;
+    }
 
     public Order(String id, String deliveryTime) {
         int hour = Integer.parseInt(deliveryTime.substring(0,2));
@@ -14,6 +19,11 @@ public class Order {
         this.id = id;
         this.deliveryTim = time;
     }
+
+    public String getSetDeliveryTime(String time){
+        this.setDeliveryTime=time;
+    }
+
 
     public Integer getId() {
         Integer integer = Integer.valueOf(id);

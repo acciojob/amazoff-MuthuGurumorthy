@@ -58,6 +58,7 @@ public class OrderRepository {
     public Order getOrderById(String orderId){
         int oId = Integer.parseInt(orderId);
         Order order = orderHashMap.get(oId);
+        order.getSetDeliveryTime(intToStringTime(order.getDeliveryTime()));
         return order;
     }
 
@@ -81,7 +82,9 @@ public class OrderRepository {
         ArrayList<Order> orders = new ArrayList<Order>();
         ArrayList<Integer> orderIds = deliveryPartnerOrderHashMap.get(pId);
         for (int orderId : orderIds){
-            orders.add(orderHashMap.get(orderId));
+            Order order = orderHashMap.get(orderId);
+            order.getSetDeliveryTime(intToStringTime(order.getDeliveryTime()));
+            orders.add(order);
         }
         return orders;
     }
@@ -130,12 +133,16 @@ public class OrderRepository {
                     time = order.getDeliveryTime();
             }
         }
+        String result = intToStringTime(time);
+        return result;
+    }
+
+    public String intToStringTime(int time){
         int min = time%60;
         int hour = time/60;
         String result = Integer.toString(hour) + ":" + Integer.toString(min);
         return result;
     }
-
 //    12
     public void deletePartnerById(String partnerId){
         int pId = Integer.parseInt(partnerId);
