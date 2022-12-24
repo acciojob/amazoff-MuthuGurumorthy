@@ -3,17 +3,24 @@ package com.driver;
 public class Order {
 
     private String id;
-    private int deliveryTime;
+    private int deliveryTim;
+
 
     public Order(String id, String deliveryTime) {
-
+        int hour = Integer.parseInt(deliveryTime.substring(0,1));
+        int minute = Integer.parseInt(deliveryTime.substring(3,4));
         // The deliveryTime has to converted from string to int and then stored in the attribute
-        //deliveryTime  = HH*60 + MM
+        int time = ((hour * 60) + minute);
+        this.id = id;
+        this.deliveryTim = time;
     }
 
-    public String getId() {
-        return id;
+    public Integer getId() {
+        Integer integer = Integer.valueOf(id);
+        return integer;
     }
 
-    public int getDeliveryTime() {return deliveryTime;}
+    public int getDeliveryTime() {
+        return deliveryTim;
+    }
 }

@@ -18,7 +18,11 @@ public class DeliveryPartner {
         return numberOfOrders;
     }
 
-    public void setNumberOfOrders(Integer numberOfOrders) {
+    public void setNumberOfOrders() {
+        this.numberOfOrders = numberOfOrders;
+    }
+
+    public void setNumberOfOrders(int numberOfOrders) {
         this.numberOfOrders = numberOfOrders;
     }
 }
