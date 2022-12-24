@@ -71,23 +71,19 @@ public class OrderRepository {
     }
 
 //    7
-    public ArrayList<Order> getOrdersByPartnerId(String partnerId){
-        ArrayList<Order> orders = new ArrayList<>();
+    public ArrayList<String> getOrdersByPartnerId(String partnerId){
+        ArrayList<String> orders = new ArrayList<>();
         ArrayList<String> orderIds = deliveryPartnerOrderHashMap.get(partnerId);
         for (String orderId : orderIds){
             Order order = orderHashMap.get(orderId);
-            orders.add(order);
+            orders.add(order.getId());
         }
         return orders;
     }
 
 //    8
-    public ArrayList<Order> getAllOrders(){
-        ArrayList<Order> orders = new ArrayList<>();
-        for(Order order : orderHashMap.values()){
-            orders.add(order);
-        }
-        return orders;
+    public ArrayList<String> getAllOrders(){
+        return new ArrayList<>(orderHashMap.keySet());
     }
 
 //    9
