@@ -54,30 +54,35 @@ public class OrderRepository {
 
 //    4
     public Order getOrderById(String orderId){
-        Order order = orderHashMap.get(orderId);
+        Order order = null;
+        if(orderHashMap.containsKey(orderId))
+            order = orderHashMap.get(orderId);
         return order;
     }
 
 //    5
     public DeliveryPartner getPartnerById(String partnerId){
-        DeliveryPartner deliveryPartner = deliveryPartnerHashMap.get(partnerId);
+        DeliveryPartner deliveryPartner = null;
+        if(deliveryPartnerHashMap.containsKey(partnerId))
+            deliveryPartner = deliveryPartnerHashMap.get(partnerId);
         return deliveryPartner;
     }
 
 //    6
-    public int getOrderCountByPartnerId(String partnerId){
-         DeliveryPartner partner = deliveryPartnerHashMap.get(partnerId);
-         return partner.getNumberOfOrders();
+    public Integer getOrderCountByPartnerId(String partnerId){
+        Integer result = null;
+        if(deliveryPartnerHashMap.containsKey(partnerId)) {
+            DeliveryPartner partner = deliveryPartnerHashMap.get(partnerId);
+            result = partner.getNumberOfOrders();
+        }
+        return result;
     }
 
 //    7
     public ArrayList<String> getOrdersByPartnerId(String partnerId){
-        ArrayList<String> orders = new ArrayList<>();
-        ArrayList<String> orderIds = deliveryPartnerOrderHashMap.get(partnerId);
-        for (String orderId : orderIds){
-            Order order = orderHashMap.get(orderId);
-            orders.add(order.getId());
-        }
+        ArrayList<String> orders = null;
+        if(deliveryPartnerOrderHashMap.containsKey(partnerId))
+            orders = deliveryPartnerOrderHashMap.get(partnerId);
         return orders;
     }
 
@@ -92,36 +97,43 @@ public class OrderRepository {
     }
 
 //    10
-    public int getOrdersLeftAfterGivenTime(String time, String partnerId){
+    public Integer getOrdersLeftAfterGivenTime(String time, String partnerId){
+        Integer count  = null;
         int timeT = (Integer.parseInt(time.substring(0,1))*60 + Integer.parseInt(time.substring(3,4)));
         ArrayList<String> orderIds = new ArrayList<>();
-        orderIds = deliveryPartnerOrderHashMap.get(partnerId);
-        int leftCount = orderIds.size();
-        for (String orderId : orderIds) {
-            Order order = orderHashMap.get(orderId);
-            if(timeT >= order.getDeliveryTime()){
-                orderAssignedHashMap.put(order.getId(),true);
-                leftCount--;
+        if(deliveryPartnerOrderHashMap.containsKey(partnerId)) {
+            orderIds = deliveryPartnerOrderHashMap.get(partnerId);
+            int leftCount = orderIds.size();
+            for (String orderId : orderIds) {
+                Order order = orderHashMap.get(orderId);
+                if(timeT >= order.getDeliveryTime()){
+                    orderAssignedHashMap.put(order.getId(),true);
+                    leftCount--;
+                }
             }
+            count  = leftCount;
         }
-        return leftCount;
+        return count;
     }
 
 //    11
     public String getLastDeliveryTimeByPartnerId(String partnerId){
+        String lastDeliveryTime = "";
         ArrayList<String> orderIds = new ArrayList<>();
-        orderIds = deliveryPartnerOrderHashMap.get(partnerId);
-        int time  = 0 ;
-        for(String orderId : orderIds){
-            if(orderAssignedHashMap.get(orderId)){
-                Order order = orderHashMap.get(orderId);
-                if(time < order.getDeliveryTime()) {
-                    time = order.getDeliveryTime();
+        if(deliveryPartnerOrderHashMap.containsKey(partnerId)) {
+            orderIds = deliveryPartnerOrderHashMap.get(partnerId);
+            int time = 0;
+            for (String orderId : orderIds) {
+                if (orderAssignedHashMap.get(orderId)) {
+                    Order order = orderHashMap.get(orderId);
+                    if (time < order.getDeliveryTime()) {
+                        time = order.getDeliveryTime();
+                    }
                 }
             }
+            lastDeliveryTime = intToStringTime(time);
         }
-        String result = intToStringTime(time);
-        return result;
+        return lastDeliveryTime;
     }
 
     public String intToStringTime(int time){
